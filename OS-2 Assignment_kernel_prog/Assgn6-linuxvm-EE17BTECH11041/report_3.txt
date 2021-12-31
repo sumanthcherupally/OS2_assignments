@@ -1,0 +1,113 @@
+Experiment - 1
+
+$swapon -s
+/dev/dm-1  Size=83967
+
+$swapoff /dev/dm-1
+================================================================
+memleak.cpp output -
+ 
+SUCCESS.
+Iteration-1 Total allocated: 100 MB
+SUCCESS.
+Iteration-2 Total allocated: 200 MB
+SUCCESS.
+Iteration-3 Total allocated: 300 MB
+SUCCESS.
+Iteration-4 Total allocated: 400 MB
+SUCCESS.
+Iteration-5 Total allocated: 500 MB
+SUCCESS.
+Iteration-6 Total allocated: 600 MB
+SUCCESS.
+Iteration-7 Total allocated: 700 MB
+FAIL.
+
+It was able to succeed upto 7 ir=terations i.e 700MB
+================================================================
+Output of vmstat -t 1 -
+
+MEMORY(free space)									swpd(free swap space)
+ 787808 - Before stsrt of the memleak.cpp program    0
+ 685316 - After allocating 100MB                     0
+ 582584												 0
+ 480084												 0
+ 377412												 0
+ 274804												 0
+ 172260												 0
+ 69588  - After allocating 700MB					 0
+ 787708 - After end of the memleak program			 0
+
+It was unable to allocate more 800 MB because swapspace was off
+//////////////////////////////////////////////////////////////////
+=================================================================
+///////////////////////////////////////////////////////////////////
+
+Experiment - 2
+
+$swapon /dev/dm-1
+================================================================
+memleak.cpp output -
+
+SUCCESS.
+Iteration-1 Total allocated: 100 MB
+SUCCESS.
+Iteration-2 Total allocated: 200 MB
+SUCCESS.
+Iteration-3 Total allocated: 300 MB
+SUCCESS.
+Iteration-4 Total allocated: 400 MB
+SUCCESS.
+Iteration-5 Total allocated: 500 MB
+SUCCESS.
+Iteration-6 Total allocated: 600 MB
+SUCCESS.
+Iteration-7 Total allocated: 700 MB
+SUCCESS.
+Iteration-8 Total allocated: 800 MB
+SUCCESS.
+Iteration-9 Total allocated: 900 MB
+SUCCESS.
+Iteration-10 Total allocated: 1000 MB
+SUCCESS.
+Iteration-11 Total allocated: 1100 MB
+SUCCESS.
+Iteration-12 Total allocated: 1200 MB
+SUCCESS.
+Iteration-13 Total allocated: 1300 MB
+SUCCESS.
+Iteration-14 Total allocated: 1400 MB
+SUCCESS.
+Iteration-15 Total allocated: 1500 MB
+SUCCESS.
+Iteration-16 Total allocated: 1600 MB
+FAIL.
+
+It was able to succeed upto 16 iterations i.e 1600MB
+================================================================
+Output of vmstat -t 1 -
+
+MEMORY(free space)    swpd(free swap space)
+ 900956					 73004					-- Before stsrt of the memleak.cpp program
+ 798472					 73004					- After allocating 100MB
+ 695928					 73004
+ 593188					 73004
+ 490572					 73004
+ 391984					 73004
+ 285360					 73004
+ 182688					 73004
+ 115124					 73004
+ 80280					 73004					- After allocating 900MB
+ 76428					 266852					- After allocating 1000MB
+ 64856					 266852
+ 49000					 407908
+ 76432					 479588
+ 69328					 566628
+ 49892					 712036
+ 54608					 819320					- After allocating 1600MB
+ 932868					 76668					- After end of the memleak program
+
+It was unable to allocate more this time because swap space 
+was also used as there was memory pressure 1600 MB was allocated
+
+=================================================================

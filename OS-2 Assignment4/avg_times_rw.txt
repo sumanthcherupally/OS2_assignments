@@ -1,0 +1,4 @@
+Avg waiting time readers : 0.00750277 sec
+Avg waiting time writers : 0.109647 sec
+Worst waiting time readers : 0.126418 sec
+Worst waiting time writers : 0.354978 sec

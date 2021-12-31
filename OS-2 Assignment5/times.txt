@@ -1,0 +1,2 @@
+Average waiting time 0.0806487
+Worst case waiting time 0.637061
